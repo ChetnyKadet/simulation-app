@@ -39,22 +39,28 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
+              const Expanded(
                   child: Align(
                 child: PlayerWidget(
                   title: 'Opponent',
                   imageAsset: 'assets/nerd.jpeg',
-                  bars: OpponentBars(healthPoints: 0.7,),
+                  bars: OpponentBars(
+                    healthPoints: 0.7,
+                  ),
                 ),
                 alignment: Alignment.centerLeft,
               )),
-              Expanded(child: Center(child: Text('boop'))),
-              Expanded(
+              const Expanded(child: Center(child: Text('boop'))),
+              const Expanded(
                   child: Align(
                 child: PlayerWidget(
                     title: 'Player',
                     imageAsset: 'assets/vampire.jpeg',
-                    bars: PlayerBars(healthPoints: 0.3,manaPoints: 0.7,energyPoints: 0.2,)),
+                    bars: PlayerBars(
+                      healthPoints: 0.3,
+                      manaPoints: 0.7,
+                      energyPoints: 0.2,
+                    )),
                 alignment: Alignment.centerLeft,
               )),
               Expanded(
@@ -73,7 +79,7 @@ class MyHomePage extends StatelessWidget {
                         child: Center(
                           child: FloatingActionButton(
                             onPressed: () {},
-                            child: Icon(Icons.add),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ),
@@ -81,7 +87,7 @@ class MyHomePage extends StatelessWidget {
                         child: Center(
                           child: FloatingActionButton(
                             onPressed: () {},
-                            child: Icon(Icons.add),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ),
@@ -89,7 +95,7 @@ class MyHomePage extends StatelessWidget {
                         child: Center(
                           child: FloatingActionButton(
                             onPressed: () {},
-                            child: Icon(Icons.add),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ),
@@ -97,7 +103,7 @@ class MyHomePage extends StatelessWidget {
                         child: Center(
                           child: FloatingActionButton(
                             onPressed: () {},
-                            child: Icon(Icons.add),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ),
@@ -152,7 +158,7 @@ class PlayerWidget extends StatelessWidget {
 }
 
 class PlayerBars extends StatelessWidget {
-    final double healthPoints;
+  final double healthPoints;
   final double manaPoints;
   final double energyPoints;
   const PlayerBars(
@@ -165,19 +171,30 @@ class PlayerBars extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          LinearProgressIndicator(
-            value: healthPoints,
-            minHeight: 15,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: LinearProgressIndicator(
+              value: healthPoints,
+              minHeight: 15,
+            ),
           ),
-          LinearProgressIndicator(
-            value: manaPoints,
-            minHeight: 15,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: LinearProgressIndicator(
+              value: manaPoints,
+              minHeight: 15,
+            ),
           ),
-          LinearProgressIndicator(
-            value: energyPoints,
-            minHeight: 15,
-          )
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: LinearProgressIndicator(
+              value: energyPoints,
+              minHeight: 15,
+            ),
+          ),
         ],
       ),
     );
@@ -187,11 +204,10 @@ class PlayerBars extends StatelessWidget {
 class OpponentBars extends StatelessWidget {
   final double healthPoints;
 
-  const OpponentBars(
-      {Key? key,
-      required this.healthPoints,
-      })
-      : super(key: key);
+  const OpponentBars({
+    Key? key,
+    required this.healthPoints,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -206,4 +222,8 @@ class OpponentBars extends StatelessWidget {
       ),
     );
   }
+}
+
+class CombatLog extends StatelessWidget {
+  
 }
