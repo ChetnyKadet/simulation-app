@@ -50,7 +50,7 @@ class MyHomePage extends StatelessWidget {
                 ),
                 alignment: Alignment.centerLeft,
               )),
-              const Expanded(child: Center(child: Text('boop'))),
+              Expanded(child: Center(child: CombatLog())),
               const Expanded(
                   child: Align(
                 child: PlayerWidget(
@@ -225,5 +225,8 @@ class OpponentBars extends StatelessWidget {
 }
 
 class CombatLog extends StatelessWidget {
-  
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+    children: const [Text('Yay a button!')],);
+  }
 }
