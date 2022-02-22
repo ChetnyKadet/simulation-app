@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Expanded(
                   child: Align(
@@ -50,7 +50,7 @@ class MyHomePage extends StatelessWidget {
                 ),
                 alignment: Alignment.centerLeft,
               )),
-              Expanded(child: Center(child: CombatLog())),
+              Expanded(child:CombatLog()),
               const Expanded(
                   child: Align(
                 child: PlayerWidget(
@@ -226,7 +226,8 @@ class OpponentBars extends StatelessWidget {
 
 class CombatLog extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start,
-    children: const [Text('Yay a button!')],);
+    return Column(crossAxisAlignment: CrossAxisAlignment.center,
+
+    children: const [Text('Yay a button!',style: TextStyle(fontSize: 18),)],);
   }
 }
