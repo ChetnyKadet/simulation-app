@@ -1,11 +1,13 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final opponentTitleProvider = Provider((_) => 'Opponent');
+final playerTitleProvider = Provider((_) => 'Player');
 
 void main() {
   debugPaintSizeEnabled = true;
-  runApp(const MyApp());
+  runApp(const ProviderScope( child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,11 +27,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     //
 
     return SafeArea(
@@ -39,24 +41,24 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(
+              Expanded(
                   child: Align(
                 child: PlayerWidget(
-                  title: 'Opponent',
+                  title: ref.watch(opponentTitleProvider),
                   imageAsset: 'assets/nerd.jpeg',
-                  bars: OpponentBars(
+                  bars: const OpponentBars(
                     healthPoints: 0.7,
                   ),
                 ),
                 alignment: Alignment.centerLeft,
               )),
-              Expanded(child:CombatLog()),
-              const Expanded(
+              Expanded(child: CombatLog()),
+              Expanded(
                   child: Align(
                 child: PlayerWidget(
-                    title: 'Player',
+                    title: ref.watch(playerTitleProvider),
                     imageAsset: 'assets/vampire.jpeg',
-                    bars: PlayerBars(
+                    bars: const PlayerBars(
                       healthPoints: 0.3,
                       manaPoints: 0.7,
                       energyPoints: 0.2,
@@ -226,8 +228,14 @@ class OpponentBars extends StatelessWidget {
 
 class CombatLog extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.center,
-
-    children: const [Text('Yay a button!',style: TextStyle(fontSize: 18),)],);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const [
+        Text(
+          'Yay a button!',
+          style: TextStyle(fontSize: 18),
+        )
+      ],
+    );
   }
 }
