@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'character.dart';
+import 'equipment.dart';
+
 final opponentTitleProvider = Provider((_) => 'Opponent');
 final playerTitleProvider = Provider((_) => 'Player');
 
+final opponentProvider = Provider((_) =>
+    Character.humanPlayer('SmallDickJohnny', CharacterEquipment(helmet, vest)));
+final playerProvider = Provider((_) =>
+    Character.vampirePlayer('BuffiesBitch', CharacterEquipment(empty, vest)));
+
 void main() {
   debugPaintSizeEnabled = true;
-  runApp(const ProviderScope( child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,7 +40,8 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //
+    final opponent = ref.watch(opponentProvider);
+    final player = ref.watch(playerProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -46,8 +55,8 @@ class MyHomePage extends ConsumerWidget {
                 child: PlayerWidget(
                   title: ref.watch(opponentTitleProvider),
                   imageAsset: 'assets/nerd.jpeg',
-                  bars: const OpponentBars(
-                    healthPoints: 0.7,
+                  bars: OpponentBars(
+                    healthPoints: opponent.currentHealth / 100,
                   ),
                 ),
                 alignment: Alignment.centerLeft,
@@ -58,8 +67,8 @@ class MyHomePage extends ConsumerWidget {
                 child: PlayerWidget(
                     title: ref.watch(playerTitleProvider),
                     imageAsset: 'assets/vampire.jpeg',
-                    bars: const PlayerBars(
-                      healthPoints: 0.3,
+                    bars: PlayerBars(
+                      healthPoints: player.currentHealth / 100,
                       manaPoints: 0.7,
                       energyPoints: 0.2,
                     )),
