@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wod_combat_screen/game_state_notifier.dart';
 
 import 'character.dart';
 import 'equipment.dart';
@@ -8,10 +9,14 @@ import 'equipment.dart';
 final opponentTitleProvider = Provider((_) => 'Opponent');
 final playerTitleProvider = Provider((_) => 'Player');
 
-final opponentProvider = Provider((_) =>
+/*final opponentProvider = Provider((_) =>
     Character.humanPlayer('SmallDickJohnny', CharacterEquipment(helmet, vest)));
 final playerProvider = Provider((_) =>
-    Character.vampirePlayer('BuffiesBitch', CharacterEquipment(empty, vest)));
+    Character.vampirePlayer('BuffiesBitch', CharacterEquipment(empty, vest)));*/
+
+final gameStateNotifierProvider =
+    StateNotifierProvider<GameStateNotifier, GameState>(
+        (_) => GameStateNotifier());
 
 void main() {
   debugPaintSizeEnabled = true;
@@ -40,8 +45,10 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final opponent = ref.watch(opponentProvider);
-    final player = ref.watch(playerProvider);
+    /*final opponent = ref.watch(opponentProvider);
+    final player = ref.watch(playerProvider);*/
+    final gameState = ref.watch(gameStateNotifierProvider);
+    final gameStateNotifier = ref.watch(gameStateNotifierProvider.notifier);
 
     return SafeArea(
       child: Scaffold(
@@ -56,7 +63,7 @@ class MyHomePage extends ConsumerWidget {
                   title: ref.watch(opponentTitleProvider),
                   imageAsset: 'assets/nerd.jpeg',
                   bars: OpponentBars(
-                    healthPoints: opponent.currentHealth / 100,
+                    healthPoints: gameState.opponent.currentHealth / gameState.opponent.maxHealth,
                   ),
                 ),
                 alignment: Alignment.centerLeft,
@@ -68,7 +75,7 @@ class MyHomePage extends ConsumerWidget {
                     title: ref.watch(playerTitleProvider),
                     imageAsset: 'assets/vampire.jpeg',
                     bars: PlayerBars(
-                      healthPoints: player.currentHealth / 100,
+                      healthPoints: gameState.player.currentHealth / gameState.player.maxHealth,
                       manaPoints: 0.7,
                       energyPoints: 0.2,
                     )),
@@ -81,7 +88,10 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[0]);
+                            },
                             child: Icon(Icons.add),
                           ),
                         ),
@@ -89,7 +99,8 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[1]);},
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -97,7 +108,8 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[2]);},
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -105,7 +117,8 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[3]);},
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -113,7 +126,8 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[4]);},
                             child: const Icon(Icons.add),
                           ),
                         ),
