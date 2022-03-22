@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wod_combat_screen/game_state_notifier.dart';
+import 'package:wod_combat_screen/log_state_notifier.dart';
 
 import 'character.dart';
 import 'equipment.dart';
@@ -16,10 +17,10 @@ final playerProvider = Provider((_) =>
 
 final gameStateNotifierProvider =
     StateNotifierProvider<GameStateNotifier, GameState>(
-        (_) => GameStateNotifier());
+        (ref) => GameStateNotifier(ref));
 
 void main() {
-  debugPaintSizeEnabled = true;
+  //debugPaintSizeEnabled = true;
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -63,7 +64,8 @@ class MyHomePage extends ConsumerWidget {
                   title: ref.watch(opponentTitleProvider),
                   imageAsset: 'assets/nerd.jpeg',
                   bars: OpponentBars(
-                    healthPoints: gameState.opponent.currentHealth / gameState.opponent.maxHealth,
+                    healthPoints: gameState.opponent.currentHealth /
+                        gameState.opponent.maxHealth,
                   ),
                 ),
                 alignment: Alignment.centerLeft,
@@ -75,7 +77,8 @@ class MyHomePage extends ConsumerWidget {
                     title: ref.watch(playerTitleProvider),
                     imageAsset: 'assets/vampire.jpeg',
                     bars: PlayerBars(
-                      healthPoints: gameState.player.currentHealth / gameState.player.maxHealth,
+                      healthPoints: gameState.player.currentHealth /
+                          gameState.player.maxHealth,
                       manaPoints: 0.7,
                       energyPoints: 0.2,
                     )),
@@ -99,8 +102,10 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {gameStateNotifier
-                                  .useAbility(gameState.player.spellbook[1]);},
+                            onPressed: () {
+                              gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[1]);
+                            },
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -108,8 +113,10 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {gameStateNotifier
-                                  .useAbility(gameState.player.spellbook[2]);},
+                            onPressed: () {
+                              gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[2]);
+                            },
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -117,8 +124,10 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {gameStateNotifier
-                                  .useAbility(gameState.player.spellbook[3]);},
+                            onPressed: () {
+                              gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[3]);
+                            },
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -126,8 +135,10 @@ class MyHomePage extends ConsumerWidget {
                       Expanded(
                         child: Center(
                           child: FloatingActionButton(
-                            onPressed: () {gameStateNotifier
-                                  .useAbility(gameState.player.spellbook[4]);},
+                            onPressed: () {
+                              gameStateNotifier
+                                  .useAbility(gameState.player.spellbook[4]);
+                            },
                             child: const Icon(Icons.add),
                           ),
                         ),
@@ -249,16 +260,23 @@ class OpponentBars extends StatelessWidget {
   }
 }
 
-class CombatLog extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        Text(
-          'Yay a button!',
-          style: TextStyle(fontSize: 18),
-        )
-      ],
+final logStateNotifierProvider =
+    StateNotifierProvider<LogStateNotifier, List<String>>((_) {
+  return LogStateNotifier();
+});
+
+class CombatLog extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final log = ref.watch(logStateNotifierProvider);
+    return ListView.builder(
+      itemCount: log.length,
+      itemBuilder: (context, index) {
+        return Text(
+          log[index],
+          style: const TextStyle(fontSize: 18),
+        );
+      },
     );
   }
 }
